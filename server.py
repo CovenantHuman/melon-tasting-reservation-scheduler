@@ -3,6 +3,7 @@
 from flask import(Flask, render_template, request, flash, session, redirect)
 from jinja2 import StrictUndefined
 from model import connect_to_db
+import crud
 
 app = Flask(__name__)
 app.secret_key = "dev"
@@ -17,9 +18,14 @@ def show_login_page():
 def login_user():
     """Login the user"""
     username = request.form.get("username")
-    session['username'] = username
-    flash('Logged in!')
-    return redirect("/reservation-search")
+    user = crud.get_user_by_username(username)
+    if user: 
+        session['username'] = username
+        flash('Logged in!')
+        return redirect("/reservation-search")
+    else:
+        flash('Not logged in!')
+        return redirect("/")
 
 if __name__ == "__main__":
     connect_to_db(app)

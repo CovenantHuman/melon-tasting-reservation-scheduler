@@ -2,6 +2,7 @@
 
 from model import db, User, Reservation, connect_to_db
 import uuid
+import datetime
 
 def create_user(username):
     """Create a new user"""
@@ -22,9 +23,6 @@ def get_reservation_by_datetime(datetime):
 
 def get_reservations_by_user(user):
     return Reservation.query.filter(Reservation.user_id == user.user_id).all()
-
-def get_user_reservation_on_date(user, datetime):
-    return Reservation.query.filter(Reservation.user_id == user.user_id, Reservation.datetime.date() == datetime.date()).first()
 
 if __name__ == "__main__":
     from server import app

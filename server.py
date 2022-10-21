@@ -53,8 +53,13 @@ def search_reservations():
         dt_end = datetime.strptime(dt_end_str, '%Y-%m-%d %H:%M')
         if end == "00:00":
             dt_end += timedelta(days=1)
-        flash(f"{dt_start} {dt_end}")
-        return render_template("search_results.html")
+        user = crud.get_user_by_username(username)
+        if False:
+            flash(f"{username} already has an appointment on {dt_start.date()}. Cannot make more than one reservation per day.")
+            return redirect("/search-reservations")
+        else:
+            flash(f"{dt_start} {dt_end}")
+            return render_template("search_results.html")
     else:
         return redirect("/")
 

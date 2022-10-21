@@ -68,7 +68,8 @@ def search_reservations():
             appt_times = []
             current = appts_start
             while current < appts_end:
-                appt_times.append(current)
+                if not crud.get_reservation_by_datetime(current):
+                    appt_times.append(current)
                 current += timedelta(minutes=30) 
             flash(f"{appts_start} {appts_end} {appt_times}")
             return render_template("search_results.html", appt_times=appt_times)

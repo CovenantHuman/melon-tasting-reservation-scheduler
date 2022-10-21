@@ -17,6 +17,9 @@ def create_reservation(user, datetime):
     reservation = Reservation(reservation_id=uuid.uuid4(), user_id=user.user_id, datetime=datetime)
     return reservation
 
+def get_reservation_by_datetime(datetime):
+    pass
+
 if __name__ == "__main__":
     from server import app
     connect_to_db(app)

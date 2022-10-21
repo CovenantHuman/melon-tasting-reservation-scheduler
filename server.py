@@ -4,6 +4,7 @@ from flask import(Flask, render_template, request, flash, session, redirect)
 from jinja2 import StrictUndefined
 from model import connect_to_db, db
 import crud
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 app.secret_key = "dev"
@@ -33,6 +34,30 @@ def show_reservation_search_page():
         return render_template('appointment_search.html')
     else:
         return redirect("/")
+
+
+@app.route("/search-reservations", methods=["POST"])
+def search_reservations():
+    username = session.get("username")
+    if username:
+        date = request.form.get("date")
+        start = request.form.get("start")
+        if start == "":
+            start = "00:00"
+        end = request.form.get("end", "00:00")
+        if end == "":
+            end = "00:00"
+        dt_start_str = f"{date} {start}"
+        dt_end_str = f"{date} {end}"
+        dt_start = datetime.strptime(dt_start_str, '%Y-%m-%d %H:%M')
+        dt_end = datetime.strptime(dt_end_str, '%Y-%m-%d %H:%M')
+        if end == "00:00":
+            dt_end += timedelta(days=1)
+        flash(f"{dt_start} {dt_end}")
+        return render_template("search_results.html")
+    else:
+        return redirect("/")
+
 
 if __name__ == "__main__":
     connect_to_db(app)

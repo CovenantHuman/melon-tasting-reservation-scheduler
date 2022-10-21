@@ -2,4 +2,15 @@
 {% block title %}Appointment Search{% endblock %}
 
 {% block body %}
+<h1>Melon Reservation Scheduler</h1>
+<form action="/search-reservations" method="POST">
+    <label for="date">Enter the date of the reservation you would like: </label> <br>
+    <input type="date" name="date" id="date" required> <br>
+    <small>Enter an appointment time range and we will only show appointments in that range.</small> <br>
+    <label for="start">Start Time: </label> <br>
+    <input type="time" name="start" id="start"> <br>
+    <label for="end">End Time: </label> <br>
+    <input type="time" name="end" id="end"> <br>
+    <input type="submit"> 
+</form>
 {% endblock %}

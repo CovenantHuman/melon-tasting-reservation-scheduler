@@ -44,7 +44,7 @@ def search_reservations():
         start = request.form.get("start")
         if start == "":
             start = "00:00"
-        end = request.form.get("end", "00:00")
+        end = request.form.get("end")
         if end == "":
             end = "00:00"
         dt_start_str = f"{date} {start}"

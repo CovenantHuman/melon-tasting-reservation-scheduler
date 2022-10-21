@@ -27,6 +27,13 @@ def login_user():
         flash('Not logged in!')
         return redirect("/")
 
+@app.route("/reservation-search")
+def show_reservation_search_page():
+    if session.get("username"):
+        return render_template('appointment_search.html')
+    else:
+        return redirect("/")
+
 if __name__ == "__main__":
     connect_to_db(app)
     

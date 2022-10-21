@@ -2,4 +2,7 @@
 {% block title %}Search Results{% endblock %}
 
 {% block body %}
+    {% for appt_time in appt_times %}
+    <a href="/book/{{appt_time}}">Book at {{appt_time.strftime("%H:%M on %m/%d/%Y")}}</a> <br>
+    {% endfor %}
 {% endblock %}

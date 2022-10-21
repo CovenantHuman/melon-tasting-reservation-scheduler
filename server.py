@@ -63,8 +63,15 @@ def search_reservations():
             flash(f"{username} already has an appointment on {dt_start.date()}. Cannot make more than one reservation per day.")
             return redirect("/search-reservations")
         else:
-            flash(f"{dt_start} {dt_end}")
-            return render_template("search_results.html")
+            appts_start = dt_start + (datetime.min - dt_start) % timedelta(minutes=30)
+            appts_end = dt_end - (dt_end - datetime.min) % timedelta(minutes=30)
+            appt_times = []
+            current = appts_start
+            while current < appts_end:
+                appt_times.append(current)
+                current += timedelta(minutes=30) 
+            flash(f"{appts_start} {appts_end} {appt_times}")
+            return render_template("search_results.html", appt_times=appt_times)
     else:
         return redirect("/")
 

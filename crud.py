@@ -2,7 +2,6 @@
 
 from model import db, User, Reservation, connect_to_db
 import uuid
-import datetime
 
 def create_user(username):
     """Create a new user"""

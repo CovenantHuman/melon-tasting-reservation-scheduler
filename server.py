@@ -54,7 +54,12 @@ def search_reservations():
         if end == "00:00":
             dt_end += timedelta(days=1)
         user = crud.get_user_by_username(username)
-        if False:
+        reservations = user.reservations
+        date_conflict = False
+        for reservation in reservations:
+            if reservation.datetime.date() == dt_start.date():
+                date_conflict = True
+        if date_conflict:
             flash(f"{username} already has an appointment on {dt_start.date()}. Cannot make more than one reservation per day.")
             return redirect("/search-reservations")
         else:

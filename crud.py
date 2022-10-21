@@ -18,7 +18,13 @@ def create_reservation(user, datetime):
     return reservation
 
 def get_reservation_by_datetime(datetime):
-    pass
+    return Reservation.query.filter(Reservation.datetime == datetime).first()
+
+def get_reservations_by_user(user):
+    return Reservation.query.filter(Reservation.user_id == user.user_id).all()
+
+def get_user_reservation_on_date(user, datetime):
+    return Reservation.query.filter(Reservation.user_id == user.user_id, Reservation.datetime.date() == datetime.date()).first()
 
 if __name__ == "__main__":
     from server import app

@@ -2,4 +2,7 @@
 {% block title %}User appointments{% endblock %}
 
 {% block body %}
+{% for appointment in appointments %}
+    <p>Appointment at {{appointment.strftime("%H:%M on %m/%d/%Y")}}</p>
+{% endfor %}
 {% endblock %}

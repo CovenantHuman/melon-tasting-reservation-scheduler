@@ -35,7 +35,6 @@ def show_reservation_search_page():
     else:
         return redirect("/")
 
-
 @app.route("/search-reservations", methods=["POST"])
 def search_reservations():
     username = session.get("username")
@@ -61,7 +60,7 @@ def search_reservations():
                 date_conflict = True
         if date_conflict:
             flash(f"{username} already has an appointment on {dt_start.date()}. Cannot make more than one reservation per day.")
-            return redirect("/search-reservations")
+            return redirect("/reservation-search")
         else:
             appts_start = dt_start + (datetime.min - dt_start) % timedelta(minutes=30)
             appts_end = dt_end - (dt_end - datetime.min) % timedelta(minutes=30)
@@ -76,6 +75,32 @@ def search_reservations():
     else:
         return redirect("/")
 
+@app.route("/book/<appt_time>")
+def book_appointment(appt_time):
+    username = session.get("username")
+    if username:
+        user = crud.get_user_by_username(username)
+        reservation = crud.create_reservation(user, appt_time)
+        db.session.add(reservation)
+        db.session.commit()
+        flash(f"Reservation at {appt_time} for {username} is set!")
+        return redirect("/user-reservations")
+    else:
+        return redirect("/")
+
+@app.route("/user-reservations")
+def show_user_reservations():
+    username = session.get("username")
+    if username:
+        user = crud.get_user_by_username(username)
+        reservations = user.reservations
+        appointments = []
+        for reservation in reservations:
+            appointments.append(reservation.datetime)
+        return render_template("user_appointments.html", appointments=appointments)
+    else:
+        return redirect("/")
+    pass
 
 if __name__ == "__main__":
     connect_to_db(app)
